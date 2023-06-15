@@ -1,32 +1,5 @@
 #include "client.h"
 
-int main() {
-    HTTPSession session = CreateHTTPSession(L"A WinHTTP Example Program/1.0");
-    if (!session.hSession) {
-        printf("Error %lu in WinHttpOpen.\n", GetLastError());
-        return 1;
-    }
-    ConnectHTTPSession(&session, L"www.python.org", INTERNET_DEFAULT_HTTPS_PORT);
-
-    if (!SendHTTPRequest(&session, L"GET", L"/404xvxchvhxkvk")) {
-        CloseHTTPSession(&session);
-        return 1;
-    }
-
-    HTTPResponse res;
-    if (!ReceiveHTTPResponse(&session, &res)) {
-        FreeResponse(&res);
-        CloseHTTPSession(&session);
-        return 1;
-    }
-
-    PrintResponse(res);
-    
-    FreeResponse(&res);
-    CloseHTTPSession(&session);
-    return 0;
-}
-
 HTTPSession CreateHTTPSession(LPCWSTR user_agent) {
     HTTPSession session = {
         WinHttpOpen(
